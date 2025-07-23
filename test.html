@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wi-Fi Payment Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f2f2f2;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      display: inline-block;
+      max-width: 400px;
+    }
+    img.logo {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 15px 30px;
+      margin: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #qrArea {
+      margin-top: 20px;
+    }
+    .help-btn {
+      background-color: #2196F3;
+      margin-top: 20px;
+      display: block;
+      text-decoration: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://cdn-icons-png.flaticon.com/512/483/483947.png" class="logo" alt="WiFi Logo">
+    <h2>ยินดีต้อนรับสู่ Wi-Fi ของเรา</h2>
+    <p>เลือกแพ็กเกจที่ต้องการ</p>
+
+    <button onclick="generateQR(20)">20 บาท / 1 ชั่วโมง</button>
+    <button onclick="generateQR(50)">50 บาท / 3 ชั่วโมง</button>
+    <button onclick="generateQR(100)">100 บาท / 24 ชั่วโมง</button>
+
+    <div id="qrArea"></div>
+
+    <a href="https://line.me/R/ti/p/yourlineid" target="_blank" class="help-btn">ขอความช่วยเหลือ</a>
+  </div>
+
+<script>
+  function generateQR() {
+    let phoneNumber = "0812345678"; // เปลี่ยนเป็นเบอร์ PromptPay ของคุณ
+    let amount = "20.00"; // ราคา Wi-Fi
+
+    // สร้าง URL QR Generator
+    let qrURL = `https://promptpay.io/${phoneNumber}/${amount}.png`;
+
+    document.getElementById('qrArea').innerHTML = 
+      `<p>กรุณาสแกน QR ด้านล่างเพื่อชำระเงิน</p>
+      <img src="${qrURL}" alt="PromptPay QR" width="250">`;
+  }
+</script>
+</body>
+</html>

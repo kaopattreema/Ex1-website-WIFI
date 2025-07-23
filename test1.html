@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wi-Fi Payment Plans</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #fceabb, #f8b500);
+      text-align: center;
+    }
+
+    header {
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-style: italic;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .plans {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 250px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card.most-favorite {
+      border: 2px solid #ff6b6b;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+    }
+
+    .price {
+      font-size: 2em;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .features {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    .features li {
+      margin-bottom: 5px;
+    }
+
+    .choose-btn {
+      background-color: #ff6b6b;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #qrArea {
+      margin-top: 30px;
+    }
+
+    .help-btn {
+      display: inline-block;
+      margin-top: 40px;
+      background-color: #2196F3;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ยินดีต้อนรับสู่ Wi-Fi ของเรา</h1>
+    <p class="subtitle">เลือกแพ็กเกจและสแกนจ่ายง่าย ๆ ผ่าน PromptPay</p>
+  </header>
+
+  <div class="plans">
+    <div class="card">
+      <h3>เริ่มต้น</h3>
+      <div class="price">฿20</div>
+      <ul class="features">
+        <li>ใช้งาน 1 ชั่วโมง</li>
+        <li>ความเร็วสูง</li>
+        <li>บริการพื้นฐาน</li>
+      </ul>
+      <button class="choose-btn" onclick="generateQR(20)">เลือก</button>
+    </div>
+
+    <div class="card most-favorite">
+      <h3>ยอดนิยม</h3>
+      <div class="price">฿50</div>
+      <ul class="features">
+        <li>ใช้งาน 3 ชั่วโมง</li>
+        <li>แถมโบนัสเวลา</li>
+        <li>ความเสถียรสูง</li>
+      </ul>
+      <button class="choose-btn" onclick="generateQR(50)">เลือก</button>
+    </div>
+
+    <div class="card">
+      <h3>แพ็กเกจเต็มวัน</h3>
+      <div class="price">฿100</div>
+      <ul class="features">
+        <li>ใช้งาน 24 ชั่วโมง</li>
+        <li>ไม่จำกัดความเร็ว</li>
+        <li>การสนับสนุนพิเศษ</li>
+      </ul>
+      <button class="choose-btn" onclick="generateQR(100)">เลือก</button>
+    </div>
+  </div>
+
+  <div id="qrArea"></div>
+
+  <a href="https://line.me/R/ti/p/yourlineid" class="help-btn" target="_blank">ขอความช่วยเหลือ</a>
+
+  <script>
+    function generateQR(amount) {
+      let phoneNumber = "0812345678"; // เปลี่ยนเป็นเบอร์ PromptPay ของคุณ
+      let qrURL = `https://promptpay.io/${phoneNumber}/${amount}.png`;
+
+      document.getElementById('qrArea').innerHTML = `
+        <p>กรุณาสแกน QR เพื่อชำระเงินจำนวน ฿${amount}</p>
+        <img src="${qrURL}" alt="PromptPay QR" width="250">
+      `;
+    }
+  </script>
+</body>
+</html>

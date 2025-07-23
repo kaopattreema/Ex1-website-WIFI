@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wi-Fi Plans - Modern Dark UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: radial-gradient(circle at top left, #2b0040, #0f001a);
+      color: #fff;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 40px;
+    }
+
+    .plans {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 100px;
+    }
+
+    .card {
+      background: linear-gradient(to bottom, #3b0066, #1c002f);
+      border-radius: 20px;
+      padding: 30px;
+      width: 280px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      text-align: left;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .card.highlight {
+      border: 2px solid #b266ff;
+    }
+
+    .card h3 {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .price {
+      font-size: 2.5em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .subtext {
+      font-size: 0.9em;
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    ul.features {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 30px;
+    }
+
+    .features li::before {
+      content: "✔";
+      color: #7df9ff;
+      margin-right: 10px;
+    }
+
+    .features li {
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      background: white;
+      color: #000;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn:hover {
+      background: #7df9ff;
+      color: #000;
+    }
+
+    .btn span {
+      margin-left: 10px;
+      font-size: 1.2em;
+    }
+
+    .tag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ffffff10;
+      border: 1px solid #fff3;
+      padding: 4px 10px;
+      font-size: 0.7em;
+      border-radius: 12px;
+      color: #fff;
+    }
+
+    /* Profile button top-right */
+    #openProfile {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #7df9ff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-weight: 700;
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 0 15px #7df9ffaa;
+      transition: background 0.3s ease;
+      z-index: 1001;
+    }
+    #openProfile:hover {
+      background: #4bd9ff;
+      box-shadow: 0 0 20px #4bd9ffcc;
+    }
+
+    /* Modal Background */
+    #modalBg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    /* Modal Content */
+    #modalContent {
+      background: linear-gradient(135deg, #3b0066, #1c002f);
+      border-radius: 15px;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px 35px;
+      color: #cde6ff;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+      position: relative;
+    }
+
+    /* Close Button */
+    #closeModal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 1.8em;
+      color: #7df9ff;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #7df9ff55;
+      margin-bottom: 25px;
+      gap: 12px;
+    }
+
+    .tabs button {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 12px 0;
+      color: #7df9ffaa;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1em;
+      border-bottom: 3px solid transparent;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .tabs button.active,
+    .tabs button:focus {
+      color: #7df9ff;
+      border-color: #7df9ff;
+      outline: none;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      font-size: 1em;
+      line-height: 1.6;
+    }
+
+    .tab-content h3 {
+      margin-bottom: 15px;
+      color: #7df9ff;
+    }
+
+    .tab-content p,
+    .tab-content ul {
+      margin-bottom: 20px;
+      color: #cde6ff;
+    }
+
+    .tab-content ul {
+      padding-left: 20px;
+    }
+
+    /* Features list in profile */
+    .tab-content ul li {
+      margin-bottom: 10px;
+      list-style: disc;
+      color: #a0cfff;
+    }
+
+    /* Logout button style */
+    #logoutBtn {
+      margin-top: 20px;
+      background-color: #ff4d4d;
+      border: none;
+      padding: 12px 20px;
+      color: white;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+    #logoutBtn:hover {
+      background-color: #e04343;
+    }
+
+    @media (max-width: 768px) {
+      .plans {
+        flex-direction: column;
+        align-items: center;
+      }
+      #modalContent {
+        max-width: 90vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>เลือกแพ็กเกจ Wi-Fi ของคุณ</h1>
+
+  <div class="plans">
+    <div class="card">
+      <h3>Free</h3>
+      <div class="price">Free</div>
+      <p class="subtext">ใช้งานฟรีสูงสุด 30 นาทีต่อวัน</p>
+      <ul class="features">
+        <li>เข้าใช้งานพื้นฐาน</li>
+        <li>ความเร็วจำกัด</li>
+        <li>โฆษณาแสดง</li>
+      </ul>
+      <button class="btn">เริ่มใช้ฟรี <span>→</span></button>
+    </div>
+
+    <div class="card highlight">
+      <div class="tag">#ยอดนิยม</div>
+      <h3>Unlimited</h3>
+      <div class="price">฿29</div>
+      <p class="subtext">ต่อวัน ไม่จำกัดการใช้งาน</p>
+      <ul class="features">
+        <li>ไม่จำกัดความเร็ว</li>
+        <li>ไม่มีโฆษณา</li>
+        <li>แถมเวลาใช้งาน</li>
+      </ul>
+      <button class="btn">เลือก Unlimited <span>→</span></button>
+    </div>
+
+    <div class="card">
+      <h3>Enterprise</h3>
+      <div class="price">฿35</div>
+      <p class="subtext">ต่อวัน สำหรับผู้ใช้ระดับองค์กร</p>
+      <ul class="features">
+        <li>รองรับหลายอุปกรณ์</li>
+        <li>ทีมสนับสนุนพิเศษ</li>
+        <li>ความปลอดภัยขั้นสูง</li>
+      </ul>
+      <button class="btn">เลือก Enterprise <span>→</span></button>
+    </div>
+  </div>
+
+  <!-- ปุ่มเปิดโปรไฟล์ -->
+  <button id="openProfile" aria-haspopup="dialog" aria-controls="modalBg">โปรไฟล์ของฉัน</button>
+
+  <!-- Modal -->
+  <div id="modalBg" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+    <div id="modalContent">
+      <button id="closeModal" aria-label="ปิดหน้าต่างโปรไฟล์">&times;</button>
+      <div class="tabs" role="tablist" aria-label="เมนูโปรไฟล์">
+        <button id="profileTabBtn" role="tab" aria-selected="true" aria-controls="profileTab" tabindex="0" class="active">ดูโปรไฟล์</button>
+        <button id="historyTabBtn" role="tab" aria-selected="false" aria-controls="historyTab" tabindex="-1">ประวัติการสมัคร</button>
+        <button id="settingsTabBtn" role="tab" aria-selected="false" aria-controls="settingsTab" tabindex="-1">ตั้งค่า</button>
+      </div>
+
+      <section id="profileTab" class="tab-content" role="tabpanel" aria-labelledby="profileTabBtn">
+        <h3>ข้อมูลผู้ใช้งาน</h3>
+        <p><strong>ชื่อผู้ใช้:</strong> พี่พี่</p>
+        <p><strong>อีเมล:</strong> ppp@example.com</p>
+        <p><strong>สถานะ:</strong> สมาชิกปัจจุบัน</p>
+      </section>
+
+      <section id="historyTab" class="tab-content" role="tabpanel" aria-labelledby="historyTabBtn" hidden>
+        <h3>ประวัติการสมัคร</h3>
+        <ul>
+          <li>Unlimited Plan - เริ่มต้น 1 ก.ค. 2025</li>
+          <li>Free Plan - เริ่มต้น 1 มิ.ย. 2025</li>
+        </ul>
+      </section>
+
+      <section id="settingsTab" class="tab-content" role="tabpanel" aria-labelledby="settingsTabBtn" hidden>
+        <h3>ตั้งค่า</h3>
+        <p>ฟีเจอร์เปลี่ยนรหัสผ่าน และการแจ้งเตือน จะเพิ่มในเวอร์ชันถัดไป</p>
+        <button id="logoutBtn">ออกจากระบบ</button>
+      </section>
+    </div>
+  </div>
+
+  <footer style="
+    background: #1a0033;
+    color: #ccc;
+    padding: 40px 20px;
+    padding-top: 80px;
+    text-align: center;
+    font-size: 0.9em;
+    border-top: 1px solid #444;
+  ">
+    <p>ติดต่อเรา: <a href="https://line.me/R/ti/p/yourlineid" style="color:#7df9ff;">LINE Official</a> | โทร 080-123-4567</p>
+    <p>© 2025 YourWiFi Co., All rights reserved.</p>
+    <div style="margin-top: 20px;">
+      <a href="#top" style="color:#7df9ff; text-decoration: none;">↑ กลับขึ้นด้านบน</a>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // เปิด modal
+      const openBtn = document.getElementById('openProfile');
+      const modalBg = document.getElementById('modalBg');
+      const closeBtn = document.getElementById('closeModal');
+
+      openBtn.addEventListener('click', () => {
+        modalBg.style.display = 'flex';
+        modalBg.focus();
+      });
+
+      closeBtn.addEventListener('click', () => {
+        modalBg.style.display = 'none';
+        openBtn.focus();
+      });
+
+      modalBg.addEventListener('click', (e) => {
+        if(e.target === modalBg) {
+          modalBg.style.display = 'none';
+          openBtn.focus();
+        }
+      });
+
+      // แท็บโปรไฟล์
+      const tabs = {
+        profileTab: document.getElementById('profileTab'),
+        historyTab: document.getElementById('historyTab'),
+        settingsTab: document.getElementById('settingsTab'),
+      };
+      const tabButtons = {
+        profileTab: document.getElementById('profileTabBtn'),
+        historyTab: document.getElementById('historyTabBtn'),
+        settingsTab: document.getElementById('settingsTabBtn'),
+      };
+
+      Object.keys(tabButtons).forEach(key => {
+        tabButtons[key].addEventListener('click', () => {
+          // ซ่อนทุกแท็บ
+          Object.values(tabs).forEach(tab => tab.hidden = true);
+          Object.values(tabButtons).forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+            btn.setAttribute('tabindex', '-1');
+          });
+
+          // แสดงแท็บที่กด
+          tabs[key].hidden = false;
+          tabButtons[key].classList.add('active');
+          tabButtons[key].setAttribute('aria-selected', 'true');
+          tabButtons[key].setAttribute('tabindex', '0');
+          tabButtons[key].focus();
+        });
+      });
+
+      // ปุ่มออกจากระบบ
+      const logoutBtn = document.getElementById('logoutBtn');
+      if(logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          // ถ้ามี sessionStorage หรือ cookie สำหรับล็อกอิน ให้ล้างที่นี่ เช่น
+          // sessionStorage.clear();
+          // document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          
+          window.location.href = 'login.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
